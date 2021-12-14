@@ -2,6 +2,7 @@ import React from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './components/Home';
+import Heroes from './components/heroes';
 import normalize from './utils/normalize';
 
 const theme = {
@@ -73,6 +74,14 @@ function App() {
             exact
             path="/"
             element={<Home />}
+          />
+          <Route
+            path="/heroes"
+            element={<Heroes />}
+          />
+          <Route
+            path="/heroes/:id"
+            element={<Heroes />}
           />
         </Routes>
       </BrowserRouter>
