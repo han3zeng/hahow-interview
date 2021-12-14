@@ -8,21 +8,25 @@ const initialState = {
   isLoading: true,
 };
 
-function useAPI({
+const optionBase = {
+  mode: 'cors',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  referrerPolicy: 'no-referrer',
+};
+
+function useQuery({
   method,
   path,
 }) {
   const [state, setState] = useState(initialState);
+  const options = {
+    ...optionBase,
+    method,
+  };
   useEffect(() => {
     async function fetchData() {
-      const options = {
-        method,
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        referrerPolicy: 'no-referrer',
-      };
       const response = await fetch(`${resourceServerOrigin}/${path}`, options);
       const data = await response.json();
       setState({
@@ -30,13 +34,15 @@ function useAPI({
         isLoading: false,
       });
     }
-    fetchData();
+    if (state.isLoading) {
+      fetchData();
+    }
   }, []);
 
   return {
-    isLoadig: state.isLoading,
+    isLoading: state.isLoading,
     data: state.data,
   };
 }
 
-export default useAPI;
+export default useQuery;

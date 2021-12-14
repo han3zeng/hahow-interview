@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import useAPI from '../../hooks/useAPI';
+import { useParams, useNavigate } from 'react-router-dom';
+import useQuery from '../../hooks/useQuery';
+import useLazyQuery from '../../hooks/useLazyQuery';
 import HeroList from './HeroList';
-
+import HeroProfile from './HeroProfile';
 
 const Container = styled.div`
   margin: 0 auto;
@@ -13,20 +15,44 @@ const Container = styled.div`
 `;
 
 function Heroes() {
-  const { data, isLoading } = useAPI({
+  const { heroId } = useParams();
+  const navigate = useNavigate();
+  const { data: heroListData, isLoading } = useQuery({
     method: 'GET',
     path: 'heroes',
   });
+  const [fetchProfile, { data: heroProfileData }] = useLazyQuery({
+    method: 'GET',
+  });
+
+  const onClickCardHandler = useCallback(({
+    id,
+  }) => {
+    navigate(`/heroes/${id}`);
+  }, []);
+
+  useEffect(() => {
+    fetchProfile({
+      path: `heroes/${heroId}/profile`,
+    });
+  }, [heroId])
 
   if (isLoading) {
     return null;
-  };
+  }
 
   return (
     <Container>
       <HeroList
-        data={data}
+        data={heroListData}
+        onClickHandler={onClickCardHandler}
+        heroId={heroId}
       />
+      {heroId && (
+        <HeroProfile
+          data={heroProfileData}
+        />
+      )}
     </Container>
   );
 }

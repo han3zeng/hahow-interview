@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 6px 5px;
     cursor: pointer;
     &:hover {
-      box-shadow: 2px 2px 2px gray;
+      border: 1px solid ${(props) => props.theme.formHighlightGray};
     }
   }
 
@@ -80,7 +80,7 @@ function App() {
             element={<Heroes />}
           />
           <Route
-            path="/heroes/:id"
+            path="/heroes/:heroId"
             element={<Heroes />}
           />
         </Routes>

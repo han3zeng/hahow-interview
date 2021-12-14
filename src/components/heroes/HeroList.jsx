@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: grid;
@@ -17,6 +18,8 @@ const Card = styled.div`
   > p {
     margin: 1em 0;
   }
+  cursor: pointer;
+  box-shadow: ${(props) => (props.highlight ? '2px 2px 2px gray' : 'none')};
 `;
 
 const ImageWrapper = styled.div`
@@ -31,10 +34,42 @@ const ImageWrapper = styled.div`
   }
 `;
 
+function CardComp({
+  id,
+  image,
+  name,
+  highlight,
+  onClickHandler,
+}) {
+  return (
+    <Card
+      key={id}
+      highlight={highlight}
+      onClick={() => {
+        onClickHandler({
+          id,
+        });
+      }}
+    >
+      <ImageWrapper>
+        <img
+          src={image}
+          alt={`hero ${name}`}
+        />
+      </ImageWrapper>
+      <p>{name}</p>
+    </Card>
+  );
+};
+
+const MemoizedCard = memo(CardComp);
+
 function HeroList({
   data,
+  onClickHandler,
+  heroId,
 }) {
-  const content = useMemo(() => {
+  const content = (() => {
     if (!data) {
       return null;
     }
@@ -43,19 +78,15 @@ function HeroList({
       image,
       name
     }) => (
-      <Card
-        key={id}
-      >
-        <ImageWrapper>
-          <img
-            src={image}
-            alt={`hero ${name}`}
-          />
-        </ImageWrapper>
-        <p>{name}</p>
-      </Card>
+      <MemoizedCard
+        id={id}
+        image={image}
+        name={name}
+        onClickHandler={onClickHandler}
+        highlight={id === heroId}
+      />
     ));
-  }, [data]);
+  })();
   return (
     <Container>
       {content}
@@ -63,4 +94,4 @@ function HeroList({
   );
 }
 
-export default HeroList;
+export default memo(HeroList);
