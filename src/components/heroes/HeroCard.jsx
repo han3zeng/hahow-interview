@@ -10,12 +10,16 @@ const Container = styled.div`
   }
   cursor: pointer;
   box-shadow: ${(props) => (props.highlight ? '3px 3px 8px gray' : 'none')};
+  transition: box-shadow 0.3s ease-in-out;
 `;
 
 const ImageWrapper = styled.div`
   padding-top: 100%;
   position: relative;
+  overflow: hidden;
   > img {
+    transform: ${(props) => (props.highlight ? 'scale(1.4)' : 'scale(1)')};
+    transition: transform 0.3s ease-in-out;
     position: absolute;
     top: 0;
     left: 0;
@@ -41,7 +45,9 @@ function HeroCard({
         });
       }}
     >
-      <ImageWrapper>
+      <ImageWrapper
+        highlight={highlight}
+      >
         <img
           src={image}
           alt={`hero ${name}`}
