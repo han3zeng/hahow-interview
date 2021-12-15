@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { config } from '../config';
+import localSession from '../utils/localSession';
+
+const { setOudatedFlag } = localSession();
 
 const { resourceServerOrigin } = config;
 
@@ -24,8 +27,14 @@ function useMutation({
   async function updateData({
     path,
     payload,
+    outdatedKey,
   }) {
     setIsLoading(true);
+    if (outdatedKey) {
+      setOudatedFlag({
+        key: outdatedKey,
+      });
+    }
     try {
       await fetch(`${resourceServerOrigin}/${path}`, {
         ...options,

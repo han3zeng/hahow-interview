@@ -44,6 +44,7 @@ function Heroes() {
       updateData({
         path: `heroes/${heroId}/profile`,
         payload,
+        outdatedKey: `hero-${heroId}`,
       });
     }
   }, [heroId, updateLoading]);
@@ -51,6 +52,7 @@ function Heroes() {
   useEffect(() => {
     fetchProfile({
       path: `heroes/${heroId}/profile`,
+      sessionId: `hero-${heroId}`,
     });
   }, [heroId])
 

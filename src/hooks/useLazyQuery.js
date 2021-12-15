@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { config } from '../config';
+import localSession from '../utils/localSession';
 
+const { getData, setData } = localSession();
 const { resourceServerOrigin } = config;
 
 const initialState = {
@@ -30,6 +32,7 @@ function useLazyQuery({
 
   async function fetchData({
     path,
+    sessionId,
   }) {
     if (controller) {
       controller.abort();
@@ -40,6 +43,20 @@ function useLazyQuery({
       data: state.data,
       isLoading: true,
     });
+
+    if (sessionId) {
+      const cacheData = getData({
+        key: sessionId,
+      });
+      if (cacheData) {
+        setState({
+          data: cacheData,
+          isLoading: false,
+        });
+        return;
+      }
+    }
+
     try {
       const response = await fetch(`${resourceServerOrigin}/${path}`, {
         ...options,
@@ -50,6 +67,12 @@ function useLazyQuery({
         data,
         isLoading: false,
       });
+      if (sessionId) {
+        setData({
+          key: sessionId,
+          payload: data,
+        });
+      }
     } catch (e) {
       console.log('e: ', e);
     }
