@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { config } from '../config';
 
 const { resourceServerOrigin } = config;
@@ -16,6 +16,8 @@ const optionBase = {
   referrerPolicy: 'no-referrer',
 };
 
+let controller = null;
+
 function useLazyQuery({
   method,
 }) {
@@ -29,16 +31,28 @@ function useLazyQuery({
   async function fetchData({
     path,
   }) {
+    if (controller) {
+      controller.abort();
+    }
+    controller = new AbortController();
+    const { signal } = controller;
     setState({
       data: state.data,
       isLoading: true,
     });
-    const response = await fetch(`${resourceServerOrigin}/${path}`, options);
-    const data = await response.json();
-    setState({
-      data,
-      isLoading: false,
-    });
+    try {
+      const response = await fetch(`${resourceServerOrigin}/${path}`, {
+        ...options,
+        signal,
+      });
+      const data = await response.json();
+      setState({
+        data,
+        isLoading: false,
+      });
+    } catch (e) {
+      console.log('e: ', e);
+    }
   }
 
   return [fetchData, {
