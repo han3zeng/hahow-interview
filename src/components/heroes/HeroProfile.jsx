@@ -1,4 +1,4 @@
-import React, { useReducer, memo, useEffect } from 'react';
+import React, { useReducer, memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -31,8 +31,14 @@ const ControlContainer = styled.div`
   }
 `;
 
+const Error = styled.span`
+  white-space: nowrap;
+  font-size: 12px;
+  color: ${(props) => props.theme.errorRed};
+`;
+
 const ResultGroup = styled.div`
-  width: 120px;
+  min-width: 135px;
   > button {
     width: 100%;
   }
@@ -170,6 +176,24 @@ function HeroProfile({
   onClickSaveHandler,
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [error, setError] = useState(null);
+
+  const onClickHandler = (event) => {
+    const leftPoinst = getLeftPoints(state);
+    if (leftPoinst !== 0) {
+      setError('剩餘點數必須為 0');
+      return;
+    }
+    const payload = {
+      ...state,
+    };
+    delete payload.totalPoints;
+    onClickSaveHandler({
+      event,
+      payload,
+    });
+    setError(null);
+  };
 
   useEffect(() => {
     if (data) {
@@ -197,19 +221,11 @@ function HeroProfile({
         {abilityControllers}
       </div>
       <ResultGroup>
+        {error && <Error>{error}</Error>}
         <p>{`剩餘點數：${getLeftPoints(state)}`}</p>
         <button
           type="button"
-          onClick={(event) => {
-            const payload = {
-              ...state,
-            };
-            delete payload.totalPoints;
-            onClickSaveHandler({
-              event,
-              payload,
-            });
-          }}
+          onClick={onClickHandler}
         >
           儲存
         </button>

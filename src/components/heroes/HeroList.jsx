@@ -1,6 +1,6 @@
-import React, { useMemo, memo } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import HeroCard from './HeroCard';
 
 const Container = styled.div`
   display: grid;
@@ -10,59 +10,6 @@ const Container = styled.div`
   padding: 1em;
   box-sizing: border-box;
 `;
-
-const Card = styled.div`
-  border: 1px solid gray;
-  text-align: center;
-  font-size: 20px;
-  > p {
-    margin: 1em 0;
-  }
-  cursor: pointer;
-  box-shadow: ${(props) => (props.highlight ? '3px 3px 8px gray' : 'none')};
-`;
-
-const ImageWrapper = styled.div`
-  padding-top: 100%;
-  position: relative;
-  > img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-`;
-
-function CardComp({
-  id,
-  image,
-  name,
-  highlight,
-  onClickHandler,
-}) {
-  return (
-    <Card
-      key={id}
-      highlight={highlight}
-      onClick={() => {
-        onClickHandler({
-          id,
-        });
-      }}
-    >
-      <ImageWrapper>
-        <img
-          src={image}
-          alt={`hero ${name}`}
-        />
-      </ImageWrapper>
-      <p>{name}</p>
-    </Card>
-  );
-};
-
-const MemoizedCard = memo(CardComp);
 
 function HeroList({
   data,
@@ -78,7 +25,7 @@ function HeroList({
       image,
       name
     }) => (
-      <MemoizedCard
+      <HeroCard
         id={id}
         image={image}
         name={name}

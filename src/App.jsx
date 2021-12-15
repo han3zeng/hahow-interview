@@ -61,6 +61,10 @@ const GlobalStyle = createGlobalStyle`
   h2 {
     font-size: 24px;
   }
+
+  .errorMsg {
+    color: red;
+  }
 `;
 
 function App() {
