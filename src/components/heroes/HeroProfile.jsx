@@ -38,13 +38,6 @@ const ResultGroup = styled.div`
   }
 `;
 
-const initialState = {
-  str: 0,
-  int: 0,
-  agi: 0,
-  luk: 0,
-};
-
 const LABEL_MAP = {
   str: 'STR',
   int: 'INT',
@@ -55,15 +48,24 @@ const LABEL_MAP = {
 const abilityKeys = ['str', 'int', 'agi', 'luk'];
 
 const getLeftPoints = (state) => (
-  abilityKeys.reduce((acc, key) => acc - state[key], state.defaultSum)
+  abilityKeys.reduce((acc, key) => acc - state[key], state.totalPoints)
 );
 
 const getTotalPoints = (state) => abilityKeys.reduce((acc, key) => acc + state[key], 0);
 
+const initialState = (() => {
+  const state = abilityKeys.reduce((acc, key) => {
+    acc[key] = 0;
+    return acc;
+  }, { });
+  state.totalPoints = 0;
+  return state;
+})();
+
 function init(initialData) {
   return {
     ...initialData,
-    defaultSum: getTotalPoints(initialData),
+    totalPoints: getTotalPoints(initialData),
   };
 }
 
@@ -165,8 +167,9 @@ const ControlRow = memo(ControlRowRaw);
 
 function HeroProfile({
   data,
+  onClickSaveHandler,
 }) {
-  const [state, dispatch] = useReducer(reducer, initialState, init);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     if (data) {
@@ -195,12 +198,28 @@ function HeroProfile({
       </div>
       <ResultGroup>
         <p>{`剩餘點數：${getLeftPoints(state)}`}</p>
-        <button>儲存</button>
+        <button
+          type="button"
+          onClick={(event) => {
+            const payload = {
+              ...state,
+            };
+            delete payload.totalPoints;
+            onClickSaveHandler({
+              event,
+              payload,
+            });
+          }}
+        >
+          儲存
+        </button>
       </ResultGroup>
     </Container>
   );
 }
 
+function areEqual(prevProps, nextPrsop) {
+  return prevProps.data === nextPrsop.data;
+}
 
-
-export default HeroProfile;
+export default memo(HeroProfile, areEqual);

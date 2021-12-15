@@ -19,7 +19,7 @@ const Card = styled.div`
     margin: 1em 0;
   }
   cursor: pointer;
-  box-shadow: ${(props) => (props.highlight ? '2px 2px 2px gray' : 'none')};
+  box-shadow: ${(props) => (props.highlight ? '3px 3px 8px gray' : 'none')};
 `;
 
 const ImageWrapper = styled.div`

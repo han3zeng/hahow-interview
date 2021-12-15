@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import useQuery from '../../hooks/useQuery';
 import useLazyQuery from '../../hooks/useLazyQuery';
+import useMutation from '../../hooks/useMutation';
 import HeroList from './HeroList';
 import HeroProfile from './HeroProfile';
 
@@ -24,12 +25,28 @@ function Heroes() {
   const [fetchProfile, { data: heroProfileData }] = useLazyQuery({
     method: 'GET',
   });
+  const [updateData, { isLoading: updateLoading }] = useMutation({
+    method: 'PATCH',
+  });
 
   const onClickCardHandler = useCallback(({
     id,
   }) => {
     navigate(`/heroes/${id}`);
   }, []);
+
+  const onClickSaveHandler = useCallback(({
+    event,
+    payload,
+  }) => {
+    event.preventDefault();
+    if (!updateLoading) {
+      updateData({
+        path: `heroes/${heroId}/profile`,
+        payload,
+      });
+    }
+  }, [heroId, updateLoading]);
 
   useEffect(() => {
     fetchProfile({
@@ -51,6 +68,7 @@ function Heroes() {
       {heroId && (
         <HeroProfile
           data={heroProfileData}
+          onClickSaveHandler={onClickSaveHandler}
         />
       )}
     </Container>
