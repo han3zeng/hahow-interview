@@ -11,7 +11,7 @@ const Container = styled.div`
   margin-top: 50px;
   padding: 20px;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
   border: 1px solid gray;
   flex-wrap: wrap;

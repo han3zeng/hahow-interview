@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { flashing } from '../../styles/animations';
 
 const Container = styled.div`
@@ -60,22 +61,21 @@ function HeroCard({
     );
   })();
   return (
-    <Container
-      key={id}
-      highlight={highlight}
-      onClick={() => {
-        onClickHandler({
-          id,
-        });
-      }}
+    <Link
+      to={`/heroes/${id}`}
     >
-      <ImageWrapper
+      <Container
+        key={id}
         highlight={highlight}
       >
-        {imageContent}
-      </ImageWrapper>
-      <p>{name || '---'}</p>
-    </Container>
+        <ImageWrapper
+          highlight={highlight}
+        >
+          {imageContent}
+        </ImageWrapper>
+        <p>{name || '---'}</p>
+      </Container>
+    </Link>
   );
 }
 

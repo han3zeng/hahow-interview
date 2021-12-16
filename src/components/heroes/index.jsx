@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useQuery from '../../hooks/useQuery';
 import useLazyQuery from '../../hooks/useLazyQuery';
 import useMutation from '../../hooks/useMutation';
@@ -21,7 +21,6 @@ const Updating = styled.p`
 
 function Heroes() {
   const { heroId } = useParams();
-  const navigate = useNavigate();
   const { data: heroListData, isLoading: heroListLoading } = useQuery({
     method: 'GET',
     path: 'heroes',
@@ -32,12 +31,6 @@ function Heroes() {
   const [updateData, { isLoading: updateLoading }] = useMutation({
     method: 'PATCH',
   });
-
-  const onClickCardHandler = useCallback(({
-    id,
-  }) => {
-    navigate(`/heroes/${id}`);
-  }, []);
 
   const onClickSaveHandler = useCallback(({
     event,
@@ -64,7 +57,6 @@ function Heroes() {
     <Container>
       <HeroList
         data={heroListData}
-        onClickHandler={onClickCardHandler}
         heroId={heroId}
         isLoading={heroListLoading}
       />

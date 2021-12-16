@@ -9,6 +9,9 @@ const Container = styled.div`
   border: 1px solid gray;
   padding: 1em;
   box-sizing: border-box;
+  a {
+    text-decoration: none;
+  }
 `;
 
 const defaultData = {
@@ -19,7 +22,6 @@ const defaultData = {
 
 function HeroList({
   data,
-  onClickHandler,
   heroId,
   isLoading,
 }) {
@@ -34,7 +36,6 @@ function HeroList({
         id={id}
         image={image}
         name={name}
-        onClickHandler={onClickHandler}
         highlight={id === heroId}
         isLoading={isLoading}
       />
