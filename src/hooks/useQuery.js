@@ -3,11 +3,6 @@ import { config } from '../config';
 
 const { resourceServerOrigin } = config;
 
-const initialState = {
-  data: null,
-  isLoading: true,
-};
-
 const optionBase = {
   mode: 'cors',
   headers: {
@@ -20,28 +15,28 @@ function useQuery({
   method,
   path,
 }) {
-  const [state, setState] = useState(initialState);
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const options = {
     ...optionBase,
     method,
   };
   useEffect(() => {
+    setIsLoading(true)
     async function fetchData() {
       const response = await fetch(`${resourceServerOrigin}/${path}`, options);
       const data = await response.json();
-      setState({
-        data,
-        isLoading: false,
-      });
+      setData(data)
+      setIsLoading(false);
     }
-    if (state.isLoading) {
+    if (isLoading) {
       fetchData();
     }
   }, []);
 
   return {
-    isLoading: state.isLoading,
-    data: state.data,
+    isLoading,
+    data,
   };
 }
 

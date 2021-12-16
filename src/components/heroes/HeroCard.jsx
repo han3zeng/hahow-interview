@@ -1,5 +1,18 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+
+const flashing = keyframes`
+  0% {
+    background-color: #E0E0E0;
+  }
+  50% {
+    background-color: #C8C8C8;
+  }
+  100% {
+    background-color: #E0E0E0;
+  }
+`;
 
 const Container = styled.div`
   border: 1px solid gray;
@@ -28,13 +41,36 @@ const ImageWrapper = styled.div`
   }
 `;
 
+const LoadingSquare = styled.div`
+  animation: ${flashing} 2s linear infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
 function HeroCard({
   id,
   image,
   name,
   highlight,
   onClickHandler,
+  isLoading,
 }) {
+  const imageContent = (() => {
+    if (isLoading) {
+      return (
+        <LoadingSquare />
+      );
+    }
+    return (
+      <img
+        src={image}
+        alt={`hero ${name}`}
+      />
+    );
+  })();
   return (
     <Container
       key={id}
@@ -48,12 +84,9 @@ function HeroCard({
       <ImageWrapper
         highlight={highlight}
       >
-        <img
-          src={image}
-          alt={`hero ${name}`}
-        />
+        {imageContent}
       </ImageWrapper>
-      <p>{name}</p>
+      <p>{name || '---'}</p>
     </Container>
   );
 }

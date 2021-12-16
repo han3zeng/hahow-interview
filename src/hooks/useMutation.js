@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { config } from '../config';
-import localSession from '../utils/localSession';
-
-const { setOudatedFlag } = localSession();
+import { setOudatedFlag } from '../utils/localSession';
 
 const { resourceServerOrigin } = config;
 

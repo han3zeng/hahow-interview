@@ -18,11 +18,11 @@ const Container = styled.div`
 function Heroes() {
   const { heroId } = useParams();
   const navigate = useNavigate();
-  const { data: heroListData, isLoading } = useQuery({
+  const { data: heroListData, isLoading: heroListLoading } = useQuery({
     method: 'GET',
     path: 'heroes',
   });
-  const [fetchProfile, { data: heroProfileData }] = useLazyQuery({
+  const [fetchProfile, { data: heroProfileData, isLoading: heroProfileLoading }] = useLazyQuery({
     method: 'GET',
   });
   const [updateData, { isLoading: updateLoading }] = useMutation({
@@ -55,10 +55,9 @@ function Heroes() {
       sessionId: `hero-${heroId}`,
     });
   }, [heroId])
-
-  if (isLoading) {
-    return null;
-  }
+  // if (heroListLoading || heroProfileLoading || updateLoading) {
+  //   return <Loading isLoading />;
+  // }
 
   return (
     <Container>
@@ -66,6 +65,7 @@ function Heroes() {
         data={heroListData}
         onClickHandler={onClickCardHandler}
         heroId={heroId}
+        isLoading={heroListLoading}
       />
       {heroId && (
         <HeroProfile

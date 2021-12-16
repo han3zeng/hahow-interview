@@ -11,16 +11,21 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
+const defaultData = {
+  id: null,
+  image: null,
+  name: null,
+};
+
 function HeroList({
   data,
   onClickHandler,
   heroId,
+  isLoading,
 }) {
   const content = (() => {
-    if (!data) {
-      return null;
-    }
-    return data.map(({
+    const receivedData = isLoading ? new Array(4).fill(defaultData) : data;
+    return receivedData.map(({
       id,
       image,
       name
@@ -31,6 +36,7 @@ function HeroList({
         name={name}
         onClickHandler={onClickHandler}
         highlight={id === heroId}
+        isLoading={isLoading}
       />
     ));
   })();

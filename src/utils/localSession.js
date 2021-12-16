@@ -1,7 +1,7 @@
-const cache = {};
-const outdatedSet = new Set();
-
 function localSession() {
+  const cache = {};
+  const outdatedSet = new Set();
+
   const setOudatedFlag = ({
     key,
   }) => {
@@ -32,4 +32,14 @@ function localSession() {
   };
 }
 
-export default localSession;
+const {
+  getData,
+  setData,
+  setOudatedFlag,
+} = localSession();
+
+export {
+  getData,
+  setData,
+  setOudatedFlag,
+};

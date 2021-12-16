@@ -1,14 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { config } from '../config';
-import localSession from '../utils/localSession';
+import { getData, setData } from '../utils/localSession';
 
-const { getData, setData } = localSession();
 const { resourceServerOrigin } = config;
 
-const initialState = {
-  data: null,
-  isLoading: true,
-};
 
 const optionBase = {
   mode: 'cors',
@@ -23,7 +18,8 @@ let controller = null;
 function useLazyQuery({
   method,
 }) {
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const options = {
     ...optionBase,
@@ -39,20 +35,14 @@ function useLazyQuery({
     }
     controller = new AbortController();
     const { signal } = controller;
-    setState({
-      data: state.data,
-      isLoading: true,
-    });
-
+    setIsLoading(true);
     if (sessionId) {
       const cacheData = getData({
         key: sessionId,
       });
       if (cacheData) {
-        setState({
-          data: cacheData,
-          isLoading: false,
-        });
+        setState(cacheData);
+        setIsLoading(false);
         return;
       }
     }
@@ -63,10 +53,8 @@ function useLazyQuery({
         signal,
       });
       const data = await response.json();
-      setState({
-        data,
-        isLoading: false,
-      });
+      setState(data);
+      setIsLoading(false);
       if (sessionId) {
         setData({
           key: sessionId,
@@ -79,8 +67,8 @@ function useLazyQuery({
   }
 
   return [fetchData, {
-    isLoading: state.isLoading,
-    data: state.data,
+    isLoading,
+    data: state,
   }];
 }
 
