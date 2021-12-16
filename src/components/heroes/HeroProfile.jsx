@@ -66,6 +66,7 @@ const Error = styled.span`
 
 const ResultGroup = styled.div`
   min-width: 135px;
+  margin-bottom: 10px;
   > button {
     width: 100%;
   }
