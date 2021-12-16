@@ -41,7 +41,7 @@ const ControlContainer = styled.div`
   }
 `;
 
-const Point = styled.p`
+const Point = styled.div`
   width: 3em;
   margin: 0 1em;
   text-align: center;

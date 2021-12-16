@@ -31,8 +31,9 @@ function HeroList({
       id,
       image,
       name
-    }) => (
+    }, index) => (
       <HeroCard
+        key={`heroCard-${id}-${index}`}
         id={id}
         image={image}
         name={name}

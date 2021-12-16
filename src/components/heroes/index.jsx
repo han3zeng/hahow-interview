@@ -47,10 +47,12 @@ function Heroes() {
   }, [heroId, updateLoading]);
 
   useEffect(() => {
-    fetchProfile({
-      path: `heroes/${heroId}/profile`,
-      sessionId: `hero-${heroId}`,
-    });
+    if (heroId) {
+      fetchProfile({
+        path: `heroes/${heroId}/profile`,
+        sessionId: `hero-${heroId}`,
+      });
+    }
   }, [heroId])
 
   return (
