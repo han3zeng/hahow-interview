@@ -16,7 +16,7 @@
 ## 專案架構
 * webpack
     * 進行所有 code 的打包，壓縮等，最後輸出在 `dist` 的資料夾裡，依照不同的 mode，dist 會分別是在 memory 和 disk 裡面。
-    * 分成 development 和 production mode 兩個，有不同的設定，在 `webpack` 這個資料夾裡面可以檢視
+    * 分成 development 和 production mode 兩個，有不同的設定，在 `webpack` 這個資料夾裡面可以檢視。
 
 * express server
     * 用做 http server 服務
@@ -39,8 +39,8 @@
 ## 第三方 libraries
 * babel
     * 是個 compiler，用來轉換不同時代的 JS，解決恐龍時代 browser 看不懂或是最新語法不支援等問題。
-* eslint將
-    * code style 標準，讓大家的 code 都長很像，跟雙胞胎一樣。
+* eslint
+    * code style 標準，讓大家的 code 都長很像，一樣漂亮。
 * express
     * 用來製作 http server 來服務網頁
 * webpack
@@ -50,7 +50,7 @@
 * react
     * 前端 framework，加快 UI 的開發。
 * react-router
-    * 幫助 client-side routing
+    * 製作 client-side routing
 * styled-components
     * css in js
         * 優點
@@ -63,3 +63,8 @@
 ## 小困難
 * 困難：想要仿造 Apollo 的資料抓取行為，由於我使用它的經驗不多，所以寫的有點卡。
 * 解決辦法：看它的 document 研究一下行為，造抄。
+
+## ToDo
+* type-check
+    * prop-types || typescript
+* testing
