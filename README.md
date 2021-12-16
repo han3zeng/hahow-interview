@@ -6,11 +6,13 @@
 #### Development Mode
 1. `npm i`
 2. `npm run dev`
+3. browse `http://localhost:3000`
 
 #### Production Mode
 1. `npm i`
 2. `npm run build`
 3. `npm run start`
+4. browse `http://localhost:3000`
 
 
 ## 專案架構
@@ -27,7 +29,7 @@
 * state management
     * 由 react hook 來管理
 
-* API
+* API 抓取
     * 仿 Apollo 做出三種資料存取 hooks
         1. useLazyQuery
         2. useMutation
@@ -35,6 +37,11 @@
 
 * In Memory Cache
     * 仿 Apollo Cache 行為，cache API 回傳的 HeroProfile 資料
+
+## Site Map
+* `home`
+    * `/heroes`
+    * `/heroes/:heroId`
 
 ## 第三方 libraries
 * babel
@@ -64,7 +71,10 @@
 * 困難：想要仿造 Apollo 的資料抓取行為，由於我使用它的經驗不多，所以寫的有點卡。
 * 解決辦法：看它的 document 研究一下行為，造抄。
 
-## ToDo
+## To Do
 * type-check
     * prop-types || typescript
 * testing
+* error handling
+    * log
+* optimize mobile UI
