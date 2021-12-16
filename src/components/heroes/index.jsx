@@ -15,6 +15,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+const Updating = styled.p`
+  text-align: center;
+`;
+
 function Heroes() {
   const { heroId } = useParams();
   const navigate = useNavigate();
@@ -55,9 +59,6 @@ function Heroes() {
       sessionId: `hero-${heroId}`,
     });
   }, [heroId])
-  // if (heroListLoading || heroProfileLoading || updateLoading) {
-  //   return <Loading isLoading />;
-  // }
 
   return (
     <Container>
@@ -71,8 +72,10 @@ function Heroes() {
         <HeroProfile
           data={heroProfileData}
           onClickSaveHandler={onClickSaveHandler}
+          isLoading={heroProfileLoading}
         />
       )}
+      {updateLoading && <Updating>...資料上傳中</Updating>}
     </Container>
   );
 }

@@ -1,18 +1,6 @@
 import React, { memo } from 'react';
-import styled, { keyframes } from 'styled-components';
-
-
-const flashing = keyframes`
-  0% {
-    background-color: #E0E0E0;
-  }
-  50% {
-    background-color: #C8C8C8;
-  }
-  100% {
-    background-color: #E0E0E0;
-  }
-`;
+import styled from 'styled-components';
+import { flashing } from '../../styles/animations';
 
 const Container = styled.div`
   border: 1px solid gray;

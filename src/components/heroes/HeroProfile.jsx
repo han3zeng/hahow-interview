@@ -1,5 +1,11 @@
-import React, { useReducer, memo, useEffect, useState } from 'react';
+import React, {
+  useReducer,
+  memo,
+  useEffect,
+  useState,
+} from 'react';
 import styled from 'styled-components';
+import { flashing } from '../../styles/animations';
 
 const Container = styled.div`
   margin-top: 50px;
@@ -11,24 +17,45 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
+const TotalPointLoading = styled.p`
+  animation: ${flashing} 2s linear infinite;
+  margin: 1em 0;
+  height: 20px;
+  width: 100%;
+`;
+
 const ControlContainer = styled.div`
-  > p {
+  display: flex;
+  align-items: center;
+  > p:first-of-type {
     box-sizing: border-box;
     letter-spacing: 1px;
     margin-right: 30px;
     width: 40px;
     display: inline-block;
   }
-  > span {
-    text-align: center;
-    display: inline-block;
-    width: 30px;
-  }
   > button {
     padding: 0;
     height: 30px;
     width: 30px;
   }
+`;
+
+const Point = styled.p`
+  width: 3em;
+  margin: 0 1em;
+  text-align: center;
+  position: relative;
+`;
+
+const PointLoading = styled.div`
+  animation: ${flashing} 2s linear infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 100%;
 `;
 
 const Error = styled.span`
@@ -138,6 +165,7 @@ function ControlRowRaw({
   abilityKey: key,
   value,
   dispatch,
+  isLoading,
 }) {
   return (
     <ControlContainer
@@ -154,7 +182,9 @@ function ControlRowRaw({
       >
         -
       </button>
-      <span>{value}</span>
+      <Point>
+        { isLoading ? <PointLoading /> : value}
+      </Point>
       <button
         type="button"
         onClick={() => {
@@ -174,6 +204,7 @@ const ControlRow = memo(ControlRowRaw);
 function HeroProfile({
   data,
   onClickSaveHandler,
+  isLoading,
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [error, setError] = useState(null);
@@ -212,8 +243,22 @@ function HeroProfile({
       abilityKey={abilityKey}
       value={state[abilityKey]}
       dispatch={dispatch}
+      isLoading={isLoading}
     />
   ));
+
+  const resultContent = (() => {
+    if (isLoading) {
+      return (
+        <TotalPointLoading />
+      );
+    }
+    return (
+      <p>
+        {`剩餘點數：${getLeftPoints(state)}`}
+      </p>
+    );
+  })();
 
   return (
     <Container>
@@ -222,7 +267,7 @@ function HeroProfile({
       </div>
       <ResultGroup>
         {error && <Error>{error}</Error>}
-        <p>{`剩餘點數：${getLeftPoints(state)}`}</p>
+        {resultContent}
         <button
           type="button"
           onClick={onClickHandler}
@@ -234,8 +279,4 @@ function HeroProfile({
   );
 }
 
-function areEqual(prevProps, nextPrsop) {
-  return prevProps.data === nextPrsop.data;
-}
-
-export default memo(HeroProfile, areEqual);
+export default memo(HeroProfile);

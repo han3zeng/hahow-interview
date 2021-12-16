@@ -53,8 +53,8 @@ function useLazyQuery({
         signal,
       });
       const data = await response.json();
-      setState(data);
       setIsLoading(false);
+      setState(data);
       if (sessionId) {
         setData({
           key: sessionId,
