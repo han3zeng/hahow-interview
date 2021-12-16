@@ -39,7 +39,7 @@
     * 仿 Apollo Cache 行為，cache API 回傳的 HeroProfile 資料
 
 ## Site Map
-* `home`
+* `/`
     * `/heroes`
     * `/heroes/:heroId`
 
